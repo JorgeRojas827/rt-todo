@@ -1,30 +1,28 @@
-import { useEffect } from 'react'
-import { LeftBar } from '../components/Leftbar/LeftBar'
-import { Main } from '../components/Main/Main'
-import { Modal } from '../components/Modal/Modal';
-import { useModal } from '../hooks/useModal';
-import { FcGoogle } from 'react-icons/fc'
+import { useEffect, useRef } from "react";
+import { LeftBar } from "../components/Leftbar/LeftBar";
+import { Main } from "../components/Main/Main";
+import { GoogleModal } from "../components/Modal/GoogleModal";
+import { useModal } from "../hooks/useModal";
+// import { LeftBarExpanded } from "../components/Leftbar/LeftBarExpanded";
+import { useMiembros } from "../hooks/useMiembros";
 
 export const Principal = () => {
+  const { modal, toggleModal } = useModal();
+  const mounted = useRef<boolean>();
+  const { user } = useMiembros();
 
-    const { modal, toggleModal } = useModal()
+  useEffect(() => {
+    if (!mounted.current) {
+      toggleModal();
+      mounted.current = true;
+    }
+  }, [user]);
 
-    useEffect(() => {
-        toggleModal();
-    }, [])
-
-    return (
-        <>
-            <LeftBar />
-            <Main />
-            {
-                modal && <Modal title = "Bienvenido" >
-                    <div className="flex flex-row space-x-5 p-5 shadow-md rounded-md mt-8">
-                        <FcGoogle className = "w-6 h-6" />
-                        <button onClick = { toggleModal } className = "text-base font-semibold" >Ingrese con cuenta de Google</button>
-                    </div>
-                </Modal> 
-            }
-        </>
-    )
-}
+  return (
+    <>
+      <LeftBar icon={user.image} />
+      <Main />
+      {modal && <GoogleModal title="Bienvenido" closable={toggleModal} />}
+    </>
+  );
+};
