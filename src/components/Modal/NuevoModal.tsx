@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import { useEntornos } from "../../hooks/useEntornos";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useModal } from "../../hooks/useModal";
+import { useMiembros } from "../../hooks/useMiembros";
+import { useTareas } from "../../hooks/useTareas";
+import { useAppSelector } from "../../hooks";
 
 interface IProps {
   title: string;
@@ -11,6 +13,7 @@ interface IProps {
   children?: JSX.Element[] | JSX.Element;
   placeholder?: string;
   closable?: () => void;
+  successMessage?: string;
 }
 
 export const NuevoModal = ({
@@ -19,13 +22,25 @@ export const NuevoModal = ({
   name,
   placeholder,
   closable,
+  successMessage,
 }: IProps) => {
   const { register, handleSubmit } = useForm();
+  const currentEnviroment = useAppSelector((state) => state.currentEnvironment);
   const { registrarEntornos } = useEntornos();
+  const { registrarTarea } = useTareas();
+  const { user } = useMiembros();
 
-  const onSubmit = ({ Entorno }: any) => {
-    registrarEntornos(Entorno as string);
-    toast.success("¡Entorno creado!", { position: "bottom-center" });
+  const onSubmit = ({ enviro_name, description }: any) => {
+    switch (name) {
+      case "enviro_name":
+        registrarEntornos(enviro_name, user.id_user);
+        toast.success(successMessage, { position: "bottom-center" });
+        break;
+      case "description":
+        registrarTarea(description, currentEnviroment.id_enviro!);
+        toast.success(successMessage, { position: "bottom-center" });
+        break;
+    }
   };
 
   return (
@@ -51,8 +66,9 @@ export const NuevoModal = ({
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <input
-                  className="mt-6 p-3 px-5 self-center shadow-default rounded-lg bg-white w-10/12 h-12"
+                  className="mt-6 p-3 focus:outline-none px-5 self-center shadow-default rounded-lg bg-white w-10/12 h-12"
                   placeholder={placeholder}
+                  autoComplete="none"
                   {...register(name)}
                   type="text"
                   name={name}

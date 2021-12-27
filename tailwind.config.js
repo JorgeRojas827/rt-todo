@@ -8,6 +8,10 @@ module.exports = {
         secondary: "#4D4D4D",
         terciary: "#8F8F8F",
         background: "#FBFBFB",
+        firstTab: "rgba(217,217,217,0.43)",
+        secondTab: "rgba(255,128,128,0.43)",
+        thirdTab: "rgba(255,235,128,0.43)",
+        fourthTab: "rgba(162,255,177,0.39)",
       },
       spacing: {
         "1/12": "8.33333333333333%",

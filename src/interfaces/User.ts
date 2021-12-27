@@ -1,5 +1,5 @@
-
 export interface DataUser {
-    name: string;
-    image: string;
-  }
+  id_user: number;
+  name: string;
+  image: string;
+}
