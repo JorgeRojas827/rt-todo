@@ -6,17 +6,35 @@ import { useEstados } from "../../hooks/useEstados";
 import { useCallback, useEffect } from "react";
 import { useModal } from "../../hooks/useModal";
 import { NuevoModal } from "../Modal/NuevoModal";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { useTareas } from "../../hooks/useTareas";
 
 export const Tasks = () => {
   const { estados, consumirEstados } = useEstados();
   const { modal, toggleModal } = useModal();
+  const { intercambiarIdsTarea } = useTareas();
 
   useEffect(() => {
     consumirEstados();
   }, [consumirEstados]);
 
-  const onDragEnd = useCallback(() => {}, []);
+  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    console.log(source.index);
+    console.log(destination.index);
+
+    intercambiarIdsTarea(source.index, destination.index);
+  };
 
   return (
     <div>

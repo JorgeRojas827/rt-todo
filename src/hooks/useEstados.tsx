@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import todoAPI from "../api/todoAPI";
 import { IState } from "../interfaces/State";
 import { useAppDispatch, useAppSelector } from "../hooks";
@@ -11,11 +11,19 @@ export const useEstados = () => {
   const consumirEstados = useCallback(async () => {
     const { data } = await todoAPI.get<IState[]>("/state");
 
-    dispatch(setStates(data));
+    dispatch(
+      setStates(
+        data.sort((a: IState, b: IState) => {
+          return a.id_state! - b.id_state!;
+        })
+      )
+    );
   }, []);
 
   const actualizarEstado = useCallback(async (id_estado: number) => {
     await todoAPI.patch("/state/update/" + id_estado);
+
+    consumirEstados();
   }, []);
 
   return {

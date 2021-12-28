@@ -2,10 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useTareas } from "../../hooks/useTareas";
-import { EmptyTasks } from "./EmptyTasks";
 import { Task } from "./Task";
 import { ITask } from "../../interfaces/Task";
-import { useEstados } from "../../hooks/useEstados";
 
 interface IProps {
   id: number;
@@ -44,7 +42,11 @@ export const Tab = ({ id, backgroundColor, title, cantidad }: IProps) => {
         <div className="absolute w-full bg-firstTab h-px top-8"></div>
       </div>
 
-      <div id="tasks" className="mt-10">
+      <div
+        id="tasks"
+        className="mt-10 overflow-hidden p-1 h-96"
+        style={{ overflowY: tasksState.length >= 5 ? "scroll" : "hidden" }}
+      >
         <Droppable droppableId={id.toString()}>
           {(provided, snapshot) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -58,9 +60,9 @@ export const Tab = ({ id, backgroundColor, title, cantidad }: IProps) => {
                     >
                       {(provided, snapshot) => (
                         <div
-                          ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
+                          ref={provided.innerRef}
                         >
                           <Task contenido={task.description} />
                         </div>
