@@ -14,6 +14,7 @@ interface IProps {
   placeholder?: string;
   closable?: () => void;
   successMessage?: string;
+  type?: string;
 }
 
 export const NuevoModal = ({
@@ -23,21 +24,26 @@ export const NuevoModal = ({
   placeholder,
   closable,
   successMessage,
+  type,
 }: IProps) => {
   const { register, handleSubmit } = useForm();
-  const currentEnviroment = useAppSelector((state) => state.currentEnvironment);
-  const { registrarEntornos } = useEntornos();
+  const { id_enviro } = useAppSelector((state) => state.currentEnvironment);
+  const { actualizarEntornos, registrarEntornos } = useEntornos();
   const { registrarTarea } = useTareas();
   const { user } = useMiembros();
 
   const onSubmit = ({ enviro_name, description }: any) => {
     switch (name) {
       case "enviro_name":
-        registrarEntornos(enviro_name, user.id_user);
+        if (type === "editar") {
+          actualizarEntornos(id_enviro!, enviro_name);
+        } else {
+          registrarEntornos(enviro_name, user.id_user);
+        }
         toast.success(successMessage, { position: "bottom-center" });
         break;
       case "description":
-        registrarTarea(description, currentEnviroment.id_enviro!);
+        registrarTarea(description, id_enviro!);
         toast.success(successMessage, { position: "bottom-center" });
         break;
     }
@@ -77,7 +83,7 @@ export const NuevoModal = ({
                 <input
                   className="mt-8 mr-8 self-end cursor-pointer text-white bg-primary p-1 px-4 rounded-lg w-20 h-10"
                   type="submit"
-                  value="Crear"
+                  value={type === "editar" ? "Editar" : "Crear"}
                 />
               </form>
             </div>
