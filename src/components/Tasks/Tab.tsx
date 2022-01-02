@@ -1,31 +1,45 @@
-import { useEffect, useState, useCallback } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useTareas } from "../../hooks/useTareas";
 import { Task } from "./Task";
 import { ITask } from "../../interfaces/Task";
+import { useAppSelector } from "../../hooks";
+import { useEstados } from "../../hooks/useEstados";
+import { IState } from "../../interfaces/State";
 
 interface IProps {
-  id: number;
-  backgroundColor: string;
-  title: string;
-  cantidad: number;
+  state: IState;
+  empty: boolean;
+  setEmpty: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Tab = ({ id, backgroundColor, title, cantidad }: IProps) => {
-  const { tasks, consumirTareas } = useTareas();
+export const Tab = ({
+  state: { id_state, bkgColor, name, cantity },
+  empty,
+  setEmpty,
+}: IProps) => {
+  const { tasks } = useTareas();
+  const { actualizarEstado } = useEstados();
   const [tasksState, setTasksState] = useState<ITask[]>([]);
+  const dnd = useAppSelector((state) => state.dnd);
+  const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
 
-  const filtrarTareas = useCallback(async () => {
-    await consumirTareas();
-    tasks.forEach(() => {
-      setTasksState(tasks.filter((task) => task.fk_state === id));
-    });
-  }, [consumirTareas, id, tasks.length]);
+  // TODO: HABILITAR OPCIÓN DE BORRAR TAREA
 
   useEffect(() => {
-    filtrarTareas();
-  }, [filtrarTareas]);
+    actualizarEstado(id_state);
+    if (tasks.length === 0) {
+      setTasksState([]);
+      setEmpty(true);
+    }
+    if (tasksState.length !== 0) {
+      setEmpty(false);
+    }
+    tasks.forEach(() => {
+      setTasksState(tasks.filter((task) => task.fk_state === id_state));
+    });
+  }, [tasks.length, enviro_name, dnd.changed, tasksState.length]);
 
   return (
     <div className="flex flex-col">
@@ -33,25 +47,25 @@ export const Tab = ({ id, backgroundColor, title, cantidad }: IProps) => {
         <div className="px-2 mr-3 font-semibold relative">
           <div
             className="px-2 mr-3 rounded-md top-0 left-0 z-10 w-full h-full absolute"
-            style={{ backgroundColor }}
+            style={{ backgroundColor: bkgColor }}
           ></div>
-          <p>{title}</p>
+          <p>{name}</p>
         </div>
-        <p className="mr-10">{cantidad}</p>
+        <p className="mr-10">{cantity}</p>
         <HiDotsHorizontal className="cursor-pointer" size={20} />
         <div className="absolute w-full bg-firstTab h-px top-8"></div>
       </div>
 
-      <div
-        id="tasks"
-        className="mt-10 overflow-hidden p-1 h-96"
-        style={{ overflowY: tasksState.length >= 5 ? "scroll" : "hidden" }}
-      >
-        <Droppable droppableId={id.toString()}>
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              {tasksState.length !== 0 &&
-                tasksState.map((task: ITask) => {
+      {!empty && (
+        <div
+          id="tasks"
+          className="mt-10 overflow-hidden p-1 h-96"
+          style={{ overflowY: tasksState.length >= 5 ? "scroll" : "hidden" }}
+        >
+          <Droppable droppableId={id_state.toString()}>
+            {(provided, snapshot) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {tasksState.map((task: ITask) => {
                   return (
                     <Draggable
                       key={task.id_task}
@@ -64,17 +78,18 @@ export const Tab = ({ id, backgroundColor, title, cantidad }: IProps) => {
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
-                          <Task contenido={task.description} />
+                          <Task task={task} />
                         </div>
                       )}
                     </Draggable>
                   );
                 })}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </div>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </div>
+      )}
     </div>
   );
 };

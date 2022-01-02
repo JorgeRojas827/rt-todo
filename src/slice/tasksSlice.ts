@@ -8,8 +8,8 @@ export const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        setTasks: (state, action: PayloadAction<ITask[]>) => {
-            state = action.payload;
+        setTasks: (_, action: PayloadAction<ITask[]>) => {
+            return action.payload;
         },
         addTask: (state, action: PayloadAction<ITask>) => {
             state.push(action.payload);

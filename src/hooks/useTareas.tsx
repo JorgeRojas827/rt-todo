@@ -1,5 +1,4 @@
 import { useAppSelector, useAppDispatch } from "../hooks";
-import { useCallback } from "react";
 import { addTask, setTasks } from "../slice/tasksSlice";
 import todoAPI from "../api/todoAPI";
 import { ITask } from "../interfaces/Task";
@@ -11,7 +10,7 @@ export const useTareas = () => {
   const { actualizarEstado } = useEstados();
   const dispatch = useAppDispatch();
 
-  const consumirTareas = useCallback(async () => {
+  const consumirTareas = async () => {
     const { data } = await todoAPI.get<ITask[]>(`/tasks/${enviro_name}`);
 
     dispatch(
@@ -21,7 +20,7 @@ export const useTareas = () => {
         })
       )
     );
-  }, [dispatch, enviro_name]);
+  };
 
   const registrarTarea = async (description: string, fk_enviroment: number) => {
     const { data } = await todoAPI.post<ITask>("/tasks/create", {
@@ -41,7 +40,10 @@ export const useTareas = () => {
     await todoAPI.patch<ITask[]>(
       `/tasks/updateIds/${originTask}/${destinationTask}`
     );
+  };
 
+  const eliminarTarea = async (id: number) => {
+    await todoAPI.delete(`/tasks/delete/${id}`);
     consumirTareas();
   };
 
@@ -49,6 +51,7 @@ export const useTareas = () => {
     tasks,
     consumirTareas,
     registrarTarea,
+    eliminarTarea,
     intercambiarIdsTarea,
   };
 };

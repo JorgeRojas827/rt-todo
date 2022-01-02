@@ -65,7 +65,6 @@ export const LeftBar = () => {
                   <p
                     onClick={() => {
                       dispatch(setCurrentEntorno({ id_enviro, enviro_name }));
-                      dispatch(setCurrentEntorno({ id_enviro, enviro_name }));
                     }}
                   >
                     {toggled && enviro_name}

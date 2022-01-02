@@ -4,6 +4,7 @@ import currentEnviromentReducer from "./slice/currentEnviromentSlice";
 import enviromentsReducer from "./slice/enviromentsSlice";
 import tasksReducer from "./slice/tasksSlice";
 import statesReducer from "./slice/stateSlice";
+import dndReducer from "./slice/dndSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     enviroments: enviromentsReducer,
     tasks: tasksReducer,
     states: statesReducer,
+    dnd: dndReducer,
   },
 });
 

@@ -3,20 +3,33 @@ import { AiOutlineUnorderedList } from "react-icons/ai";
 import { FiPlus } from "react-icons/fi";
 import { Tab } from "./Tab";
 import { useEstados } from "../../hooks/useEstados";
-import { useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useModal } from "../../hooks/useModal";
 import { NuevoModal } from "../Modal/NuevoModal";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useTareas } from "../../hooks/useTareas";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { setChanged } from "../../slice/dndSlice";
+import { useEntornos } from "../../hooks/useEntornos";
+import { EmptyTasks } from "./EmptyTasks";
 
 export const Tasks = () => {
   const { estados, consumirEstados } = useEstados();
   const { modal, toggleModal } = useModal();
-  const { intercambiarIdsTarea } = useTareas();
+  const [empty, setEmpty] = useState<boolean>(true);
+  const { changed } = useAppSelector((state) => state.dnd);
+  const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
+  const { intercambiarIdsTarea, tasks, consumirTareas } = useTareas();
+  const dispatch = useAppDispatch();
+
+  // TODO: MANTENER LISTA AL INTERCAMBIAR TAREAS
+  // TODO: AL CAMBIAR EL ENTORNO QUE SE RESETEE LAS TAREAS
+  // TODO: CAMBIAR EL ESTADO AL INTERCAMBIAR
 
   useEffect(() => {
     consumirEstados();
-  }, [consumirEstados]);
+    consumirTareas();
+  }, [enviro_name, tasks.length, changed]);
 
   const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
     if (!destination) {
@@ -30,10 +43,11 @@ export const Tasks = () => {
       return;
     }
 
-    console.log(source.index);
-    console.log(destination.index);
-
     intercambiarIdsTarea(source.index, destination.index);
+    dispatch(setChanged(true));
+    setTimeout(() => {
+      dispatch(setChanged(false));
+    }, 2000);
   };
 
   return (
@@ -62,15 +76,15 @@ export const Tasks = () => {
               return (
                 <Tab
                   key={estado.id_state}
-                  id={estado.id_state}
-                  title={estado.name}
-                  cantidad={estado.cantity}
-                  backgroundColor={estado.bkgColor}
+                  setEmpty={setEmpty}
+                  empty={empty}
+                  state={estado}
                 />
               );
             })}
           </DragDropContext>
         </div>
+        {empty && <EmptyTasks />}
         {modal && (
           <NuevoModal
             title="Nueva Tarea"
