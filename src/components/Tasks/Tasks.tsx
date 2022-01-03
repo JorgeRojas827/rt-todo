@@ -59,6 +59,7 @@ export const Tasks = () => {
           <div className="flex">
             <div
               className="cursor-pointer p-2 rounded-tl-lg rounded-bl-lg"
+              onClick={() => toggleDisplay("board")}
               style={
                 display === "board"
                   ? { backgroundColor: "#313131", color: "#fff" }
@@ -68,10 +69,11 @@ export const Tasks = () => {
                     }
               }
             >
-              <BiGridAlt onClick={() => toggleDisplay("board")} size={34} />
+              <BiGridAlt size={34} />
             </div>
             <div
               className="cursor-pointer p-2 rounded-tr-lg rounded-br-lg"
+              onClick={() => toggleDisplay("list")}
               style={
                 display === "list"
                   ? {
@@ -84,10 +86,7 @@ export const Tasks = () => {
                     }
               }
             >
-              <AiOutlineUnorderedList
-                onClick={() => toggleDisplay("list")}
-                size={34}
-              />
+              <AiOutlineUnorderedList size={34} />
             </div>
           </div>
           <div

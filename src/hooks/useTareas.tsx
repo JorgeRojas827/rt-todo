@@ -7,7 +7,7 @@ import { useEstados } from "./useEstados";
 export const useTareas = () => {
   const tasks = useAppSelector((state) => state.tasks);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
-  const { actualizarEstado } = useEstados();
+  const { estados, actualizarEstado } = useEstados();
   const dispatch = useAppDispatch();
 
   const consumirTareas = async () => {
@@ -26,9 +26,10 @@ export const useTareas = () => {
     const { data } = await todoAPI.post<ITask>("/tasks/create", {
       description,
       fk_enviroment,
+      fk_state: estados[0].id_state,
     });
 
-    actualizarEstado(data.fk_state!);
+    actualizarEstado(estados[0].id_state);
 
     dispatch(addTask(data));
   };

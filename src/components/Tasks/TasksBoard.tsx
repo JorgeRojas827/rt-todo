@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { HiDotsHorizontal } from "react-icons/hi";
 import { useTareas } from "../../hooks/useTareas";
 import { ITask } from "../../interfaces/Task";
 import { useAppSelector } from "../../hooks";
@@ -43,7 +42,7 @@ export const TasksBoard = ({
 
   return (
     <div className="flex flex-col">
-      <div className="flex relative">
+      <div className="flex relative justify-between">
         <div className="px-2 mr-3 font-semibold relative">
           <div
             className="px-2 mr-3 rounded-md top-0 left-0 z-10 w-full h-full absolute"
@@ -51,8 +50,7 @@ export const TasksBoard = ({
           ></div>
           <p>{name}</p>
         </div>
-        <p className="mr-10">{cantity}</p>
-        <HiDotsHorizontal className="cursor-pointer" size={20} />
+        <p className="ml-10">{cantity}</p>
         <div className="absolute w-full bg-firstTab h-px top-8"></div>
       </div>
 

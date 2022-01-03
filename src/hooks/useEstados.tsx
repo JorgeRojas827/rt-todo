@@ -7,9 +7,12 @@ import { setStates } from "../slice/stateSlice";
 export const useEstados = () => {
   const dispatch = useAppDispatch();
   const estados = useAppSelector((state) => state.states);
+  const { id_enviro, enviro_name } = useAppSelector(
+    (state) => state.currentEnvironment
+  );
 
   const consumirEstados = useCallback(async () => {
-    const { data } = await todoAPI.get<IState[]>("/state");
+    const { data } = await todoAPI.get<IState[]>("/state/" + id_enviro);
 
     dispatch(
       setStates(
@@ -18,16 +21,11 @@ export const useEstados = () => {
         })
       )
     );
+  }, [enviro_name]);
+
+  const actualizarEstado = useCallback(async (id_estado: number) => {
+    await todoAPI.patch("/state/update/" + id_estado);
   }, []);
-
-  const actualizarEstado = useCallback(
-    async (id_estado: number) => {
-      await todoAPI.patch("/state/update/" + id_estado);
-
-      consumirEstados();
-    },
-    [consumirEstados]
-  );
 
   return {
     estados,

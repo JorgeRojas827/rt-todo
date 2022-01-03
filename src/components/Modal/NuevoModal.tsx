@@ -76,6 +76,7 @@ export const NuevoModal = ({
                   placeholder={placeholder}
                   autoComplete="none"
                   {...register(name)}
+                  required
                   type="text"
                   name={name}
                   id={name}
