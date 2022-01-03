@@ -1,5 +1,5 @@
 import { BsThreeDotsVertical, BsTrashFill } from "react-icons/bs";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useTareas } from "../../hooks/useTareas";
 import { useEstados } from "../../hooks/useEstados";
 import { ITask } from "../../interfaces/Task";
@@ -8,7 +8,9 @@ interface IProps {
   task: ITask;
 }
 
-export const Task = ({ task: { description, id_task, fk_state } }: IProps) => {
+export const TaskBoard = ({
+  task: { description, id_task, fk_state },
+}: IProps) => {
   const [open, setOpen] = useState(false);
   const { eliminarTarea } = useTareas();
   const { actualizarEstado } = useEstados();

@@ -1,7 +1,7 @@
 import { BiGridAlt } from "react-icons/bi";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { FiPlus } from "react-icons/fi";
-import { Tab } from "./Tab";
+import { TasksBoard } from "./TasksBoard";
 import { useEstados } from "../../hooks/useEstados";
 import { useEffect, useState } from "react";
 import { useModal } from "../../hooks/useModal";
@@ -10,17 +10,18 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useTareas } from "../../hooks/useTareas";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setChanged } from "../../slice/dndSlice";
-import { useEntornos } from "../../hooks/useEntornos";
 import { EmptyTasks } from "./EmptyTasks";
+import { TasksList } from "./TasksList";
 
 export const Tasks = () => {
-  const { estados, consumirEstados } = useEstados();
-  const { modal, toggleModal } = useModal();
   const [empty, setEmpty] = useState<boolean>(true);
+  const [display, setDisplay] = useState("board");
   const { changed } = useAppSelector((state) => state.dnd);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
-  const { intercambiarIdsTarea, tasks, consumirTareas } = useTareas();
   const dispatch = useAppDispatch();
+  const { intercambiarIdsTarea, tasks, consumirTareas } = useTareas();
+  const { estados, consumirEstados } = useEstados();
+  const { modal, toggleModal } = useModal();
 
   // TODO: MANTENER LISTA AL INTERCAMBIAR TAREAS
   // TODO: AL CAMBIAR EL ENTORNO QUE SE RESETEE LAS TAREAS
@@ -45,9 +46,10 @@ export const Tasks = () => {
 
     intercambiarIdsTarea(source.index, destination.index);
     dispatch(setChanged(true));
-    setTimeout(() => {
-      dispatch(setChanged(false));
-    }, 2000);
+  };
+
+  const toggleDisplay = (display: string) => {
+    setDisplay(display);
   };
 
   return (
@@ -55,11 +57,37 @@ export const Tasks = () => {
       <div className="flex flex-col justify-center items-center w-full">
         <div className="flex my-10 w-21/24 self-start ml-20 justify-between">
           <div className="flex">
-            <div className="bg-primary cursor-pointer text-white p-2 rounded-tl-lg rounded-bl-lg">
-              <BiGridAlt size={34} />
+            <div
+              className="cursor-pointer p-2 rounded-tl-lg rounded-bl-lg"
+              style={
+                display === "board"
+                  ? { backgroundColor: "#313131", color: "#fff" }
+                  : {
+                      backgroundColor: "#fff",
+                      color: "#313131",
+                    }
+              }
+            >
+              <BiGridAlt onClick={() => toggleDisplay("board")} size={34} />
             </div>
-            <div className="bg-white cursor-pointer text-primary p-2 rounded-tr-lg rounded-br-lg">
-              <AiOutlineUnorderedList size={34} />
+            <div
+              className="cursor-pointer p-2 rounded-tr-lg rounded-br-lg"
+              style={
+                display === "list"
+                  ? {
+                      backgroundColor: "#313131",
+                      color: "#fff",
+                    }
+                  : {
+                      backgroundColor: "#fff",
+                      color: "#313131",
+                    }
+              }
+            >
+              <AiOutlineUnorderedList
+                onClick={() => toggleDisplay("list")}
+                size={34}
+              />
             </div>
           </div>
           <div
@@ -70,20 +98,28 @@ export const Tasks = () => {
             <p>Añadir tarea</p>
           </div>
         </div>
-        <div className="flex justify-between mb-10 w-10/12">
-          <DragDropContext onDragEnd={onDragEnd}>
-            {estados.map((estado) => {
-              return (
-                <Tab
-                  key={estado.id_state}
-                  setEmpty={setEmpty}
-                  empty={empty}
-                  state={estado}
-                />
-              );
-            })}
-          </DragDropContext>
-        </div>
+        {display === "board" ? (
+          <div className="flex justify-between mb-10 w-10/12">
+            <DragDropContext onDragEnd={onDragEnd}>
+              {estados.map((estado) => {
+                return (
+                  <TasksBoard
+                    key={estado.id_state}
+                    setEmpty={setEmpty}
+                    empty={empty}
+                    state={estado}
+                  />
+                );
+              })}
+            </DragDropContext>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center w-10/12">
+            <DragDropContext onDragEnd={onDragEnd}>
+              <TasksList empty={empty} setEmpty={setEmpty} />
+            </DragDropContext>
+          </div>
+        )}
         {empty && <EmptyTasks />}
         {modal && (
           <NuevoModal

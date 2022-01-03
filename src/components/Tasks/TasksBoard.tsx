@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useTareas } from "../../hooks/useTareas";
-import { Task } from "./Task";
 import { ITask } from "../../interfaces/Task";
 import { useAppSelector } from "../../hooks";
 import { useEstados } from "../../hooks/useEstados";
 import { IState } from "../../interfaces/State";
+import { TaskBoard } from "./TaskBoard";
 
 interface IProps {
   state: IState;
@@ -14,7 +14,7 @@ interface IProps {
   setEmpty: Dispatch<SetStateAction<boolean>>;
 }
 
-export const Tab = ({
+export const TasksBoard = ({
   state: { id_state, bkgColor, name, cantity },
   empty,
   setEmpty,
@@ -59,7 +59,7 @@ export const Tab = ({
       {!empty && (
         <div
           id="tasks"
-          className="mt-10 overflow-hidden p-1 h-96"
+          className="mt-6 overflow-hidden p-1 h-96"
           style={{ overflowY: tasksState.length >= 5 ? "scroll" : "hidden" }}
         >
           <Droppable droppableId={id_state.toString()}>
@@ -78,7 +78,7 @@ export const Tab = ({
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
-                          <Task task={task} />
+                          <TaskBoard task={task} />
                         </div>
                       )}
                     </Draggable>

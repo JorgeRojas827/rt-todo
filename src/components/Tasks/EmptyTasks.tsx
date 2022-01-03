@@ -5,10 +5,12 @@ import { Empty } from "../Empty";
 export const EmptyTasks = () => {
   return (
     <React.Fragment>
-      <Empty
-        Icon={IoCheckmarkCircleOutline}
-        title="No tienes tareas pendientes"
-      />
+      <div className="mt-24">
+        <Empty
+          Icon={IoCheckmarkCircleOutline}
+          title="No tienes tareas pendientes"
+        />
+      </div>
     </React.Fragment>
   );
 };
