@@ -12,8 +12,8 @@ interface IProps {
 }
 
 export const TasksList = ({ empty, setEmpty }: IProps) => {
-  const { estados } = useEstados();
-  const { tasks, consumirTareas } = useTareas();
+  const { estados, actualizarEstado } = useEstados();
+  const { tasks } = useTareas();
   const [cantity, setCantity] = useState(0);
 
   const calcularTotal = () => {
@@ -21,9 +21,9 @@ export const TasksList = ({ empty, setEmpty }: IProps) => {
   };
 
   useEffect(() => {
-    consumirTareas();
+    actualizarEstado(estados[0].id_state);
     calcularTotal();
-  }, [tasks.length]);
+  }, [tasks.length, JSON.stringify(estados), JSON.stringify(tasks)]);
 
   return (
     <React.Fragment>

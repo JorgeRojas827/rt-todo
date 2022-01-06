@@ -15,6 +15,7 @@ interface IProps {
   closable?: () => void;
   successMessage?: string;
   type?: string;
+  id_task?: number;
 }
 
 export const NuevoModal = ({
@@ -25,11 +26,12 @@ export const NuevoModal = ({
   closable,
   successMessage,
   type,
+  id_task,
 }: IProps) => {
   const { register, handleSubmit } = useForm();
   const { id_enviro } = useAppSelector((state) => state.currentEnvironment);
   const { actualizarEntornos, registrarEntornos } = useEntornos();
-  const { registrarTarea } = useTareas();
+  const { registrarTarea, actualizarTarea } = useTareas();
   const { user } = useMiembros();
 
   const onSubmit = ({ enviro_name, description }: any) => {
@@ -43,7 +45,11 @@ export const NuevoModal = ({
         toast.success(successMessage, { position: "bottom-center" });
         break;
       case "description":
-        registrarTarea(description, id_enviro!);
+        if (type === "editar") {
+          actualizarTarea(id_task!, description);
+        } else {
+          registrarTarea(description, id_enviro!);
+        }
         toast.success(successMessage, { position: "bottom-center" });
         break;
     }

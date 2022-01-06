@@ -12,14 +12,16 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setChanged } from "../../slice/dndSlice";
 import { EmptyTasks } from "./EmptyTasks";
 import { TasksList } from "./TasksList";
+import { ITask } from "../../interfaces/Task";
+import { setTasks } from "../../slice/tasksSlice";
+import { ExchangeIds } from "../../helpers/ExchangeIds";
 
 export const Tasks = () => {
   const [empty, setEmpty] = useState<boolean>(true);
   const [display, setDisplay] = useState("board");
-  const { changed } = useAppSelector((state) => state.dnd);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
-  const dispatch = useAppDispatch();
   const { intercambiarIdsTarea, tasks, consumirTareas } = useTareas();
+  const dispatch = useAppDispatch();
   const { estados, consumirEstados } = useEstados();
   const { modal, toggleModal } = useModal();
 
@@ -30,22 +32,20 @@ export const Tasks = () => {
   useEffect(() => {
     consumirEstados();
     consumirTareas();
-  }, [enviro_name, tasks.length, changed]);
+  }, [enviro_name, tasks.length]);
 
-  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
-    if (!destination) {
-      return;
-    }
+  const onDragEnd = (result: DropResult) => {
+    const items = ExchangeIds(result, tasks);
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
+    dispatch(
+      setTasks(
+        items!.sort((a: ITask, b: ITask) => {
+          return a.id_task! - b.id_task!;
+        })
+      )
+    );
 
-    intercambiarIdsTarea(source.index, destination.index);
-    dispatch(setChanged(true));
+    intercambiarIdsTarea(result.source.index, result.destination!.index);
   };
 
   const toggleDisplay = (display: string) => {

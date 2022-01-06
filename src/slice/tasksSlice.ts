@@ -13,7 +13,7 @@ export const tasksSlice = createSlice({
         },
         addTask: (state, action: PayloadAction<ITask>) => {
             state.push(action.payload);
-        }
+        },
     }
 })
 

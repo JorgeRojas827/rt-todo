@@ -21,7 +21,6 @@ export const TasksBoard = ({
   const { tasks } = useTareas();
   const { actualizarEstado } = useEstados();
   const [tasksState, setTasksState] = useState<ITask[]>([]);
-  const dnd = useAppSelector((state) => state.dnd);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
 
   // TODO: HABILITAR OPCIÓN DE BORRAR TAREA
@@ -38,7 +37,7 @@ export const TasksBoard = ({
     tasks.forEach(() => {
       setTasksState(tasks.filter((task) => task.fk_state === id_state));
     });
-  }, [tasks.length, enviro_name, dnd.changed, tasksState.length]);
+  }, [tasks.length, enviro_name, tasksState.length, JSON.stringify(tasks)]);
 
   return (
     <div className="flex flex-col">

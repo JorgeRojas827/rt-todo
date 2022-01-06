@@ -48,11 +48,17 @@ export const useTareas = () => {
     consumirTareas();
   };
 
+  const actualizarTarea = async (id_task: number, description: string) => {
+    await todoAPI.patch(`/tasks/update/${id_task}/${description}`);
+    consumirTareas();
+  };
+
   return {
     tasks,
     consumirTareas,
     registrarTarea,
     eliminarTarea,
+    actualizarTarea,
     intercambiarIdsTarea,
   };
 };

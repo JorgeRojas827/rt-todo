@@ -10,12 +10,14 @@ import { Enviroment } from "../../interfaces/Enviroment";
 import { useMiembros } from "../../hooks/useMiembros";
 import { useAppDispatch } from "../../hooks";
 import { setCurrentEntorno } from "../../slice/currentEnviromentSlice";
+import { useTareas } from "../../hooks/useTareas";
 
 export const LeftBar = () => {
   const { modal, toggleModal } = useModal();
   const [toggled, setToggled] = useState(false);
   const { user } = useMiembros();
   const { entornos, consumirEntornos } = useEntornos();
+  const { consumirTareas } = useTareas();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -65,6 +67,7 @@ export const LeftBar = () => {
                   <p
                     onClick={() => {
                       dispatch(setCurrentEntorno({ id_enviro, enviro_name }));
+                      consumirTareas();
                     }}
                   >
                     {toggled && enviro_name}
@@ -92,16 +95,16 @@ export const LeftBar = () => {
         <GoogleLogout
           clientId={clientId}
           render={(renderProps) => (
-            <div className="flex mt-8 items-center space-x-3 justify-center">
-              <FiLogOut
-                onClick={renderProps.onClick}
-                className="w-5 h-5 text-white cursor-pointer"
-              />
+            <div
+              onClick={renderProps.onClick}
+              className="flex mt-8 items-center cursor-pointer space-x-3 justify-center"
+            >
+              <FiLogOut className="w-5 h-5 text-white" />
               {toggled && <h1 className="text-white text-sm">Salir</h1>}
             </div>
           )}
           buttonText="Logout"
-          onLogoutSuccess={() => console.log("logout")}
+          onLogoutSuccess={() => window.location.replace("")}
         />
         {modal && (
           <NuevoModal
