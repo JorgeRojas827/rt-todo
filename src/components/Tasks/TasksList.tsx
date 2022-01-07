@@ -11,7 +11,7 @@ interface IProps {
   setEmpty: Dispatch<SetStateAction<boolean>>;
 }
 
-export const TasksList = ({ empty, setEmpty }: IProps) => {
+export const TasksList = ({ empty }: IProps) => {
   const { estados, actualizarEstado } = useEstados();
   const { tasks } = useTareas();
   const [cantity, setCantity] = useState(0);

@@ -7,7 +7,7 @@ import { useEstados } from "./useEstados";
 export const useTareas = () => {
   const tasks = useAppSelector((state) => state.tasks);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
-  const { estados, actualizarEstado } = useEstados();
+  const { estados, actualizarEstado, consumirEstados } = useEstados();
   const dispatch = useAppDispatch();
 
   const consumirTareas = async () => {
@@ -53,6 +53,11 @@ export const useTareas = () => {
     consumirTareas();
   };
 
+  const actualizarEstadoDeTarea = async (id_task: number, fk_state: number) => {
+    await todoAPI.patch(`/tasks/updateStateFk/${id_task}/${fk_state}`);
+    consumirEstados();
+  };
+
   return {
     tasks,
     consumirTareas,
@@ -60,5 +65,6 @@ export const useTareas = () => {
     eliminarTarea,
     actualizarTarea,
     intercambiarIdsTarea,
+    actualizarEstadoDeTarea,
   };
 };

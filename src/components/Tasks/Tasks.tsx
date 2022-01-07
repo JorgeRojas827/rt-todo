@@ -9,18 +9,18 @@ import { NuevoModal } from "../Modal/NuevoModal";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useTareas } from "../../hooks/useTareas";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setChanged } from "../../slice/dndSlice";
 import { EmptyTasks } from "./EmptyTasks";
 import { TasksList } from "./TasksList";
 import { ITask } from "../../interfaces/Task";
 import { setTasks } from "../../slice/tasksSlice";
-import { ExchangeIds } from "../../helpers/ExchangeIds";
+import { useOnDragEndHandler } from "../../helpers/OnDragEndHandler";
 
 export const Tasks = () => {
   const [empty, setEmpty] = useState<boolean>(true);
   const [display, setDisplay] = useState("board");
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
-  const { intercambiarIdsTarea, tasks, consumirTareas } = useTareas();
+  const { tasks, consumirTareas } = useTareas();
+  const { onDragEndHandler } = useOnDragEndHandler();
   const dispatch = useAppDispatch();
   const { estados, consumirEstados } = useEstados();
   const { modal, toggleModal } = useModal();
@@ -35,17 +35,17 @@ export const Tasks = () => {
   }, [enviro_name, tasks.length]);
 
   const onDragEnd = (result: DropResult) => {
-    const items = ExchangeIds(result, tasks);
+    const items = onDragEndHandler(result, tasks);
 
-    dispatch(
-      setTasks(
-        items!.sort((a: ITask, b: ITask) => {
-          return a.id_task! - b.id_task!;
-        })
-      )
-    );
-
-    intercambiarIdsTarea(result.source.index, result.destination!.index);
+    if (items) {
+      dispatch(
+        setTasks(
+          items.sort((a: ITask, b: ITask) => {
+            return a.id_task! - b.id_task!;
+          })
+        )
+      );
+    }
   };
 
   const toggleDisplay = (display: string) => {
