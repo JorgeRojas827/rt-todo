@@ -20,7 +20,7 @@ export const Principal = () => {
   }, [user, toggleModal]);
 
   const clientId =
-    "49630108708-k52548mms6dpctid879h75e3filga94s.apps.googleusercontent.com";
+    "49630108708-ps6nkv8q1k2b7ah1914vt6nk27dka7s2.apps.googleusercontent.com";
 
   return (
     <React.Fragment>
