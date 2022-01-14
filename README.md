@@ -1,2 +1,2 @@
 # rt-todo
-A personal project for practice purposes
+A personal project for practice purposes.
