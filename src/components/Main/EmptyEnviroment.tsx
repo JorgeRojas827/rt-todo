@@ -7,7 +7,7 @@ export const EmptyEnviroment = () => {
     <React.Fragment>
       <Empty
         open
-        titleModal="Nombre del Entorno:"
+        titleModal="Nuevo Entorno:"
         placeholder="Nombre del Entorno"
         name="enviro_name"
         clickable

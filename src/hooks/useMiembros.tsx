@@ -26,12 +26,13 @@ export const useMiembros = () => {
     dispatch(
       setUser({
         id_user: validar[0].id_user,
+        email,
         name: username,
         image: picture,
       })
     );
 
-    consumirEntornos(username);
+    consumirEntornos(email);
   };
 
   const validarMiembro = async (email: string) => {

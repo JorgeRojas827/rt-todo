@@ -15,14 +15,18 @@ import { useTareas } from "../../hooks/useTareas";
 export const LeftBar = () => {
   const { modal, toggleModal } = useModal();
   const [toggled, setToggled] = useState(false);
+  const [burger, setBurger] = useState(false);
   const { user } = useMiembros();
   const { entornos, consumirEntornos } = useEntornos();
   const { consumirTareas } = useTareas();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    consumirEntornos(user.name);
-  }, [consumirEntornos, user.name]);
+    consumirEntornos(user.email!);
+  }, [consumirEntornos, user.email]);
+
+  // TODO: Responsive leftside, tasks, TODO
+  // TODO: Testear con diferentes usuarios
 
   const clientId =
     "49630108708-k52548mms6dpctid879h75e3filga94s.apps.googleusercontent.com";
@@ -31,16 +35,21 @@ export const LeftBar = () => {
     setToggled(!toggled);
   };
 
+  const toggleBurguer = () => {
+    setBurger(!burger);
+  };
+
   return (
     <motion.div
-      whileHover={{
-        width: "200px",
-      }}
+      whileHover={{ width: "200px" }}
       onHoverStart={toggleBar}
       onHoverEnd={toggleBar}
-      className="bg-primary md:w-leftBar w-full md:h-full h-3/24 flex md:flex-col items-center  md:px-0 md:py-8 px-4"
+      className="bg-primary md:w-leftBar w-full md:h-full h-3/24 flex md:flex-col justify-between items-center md:px-0 md:py-8 px-4"
     >
-      <GiHamburgerMenu className="text-white md:hidden transform scale-125" />
+      <GiHamburgerMenu
+        className="text-white md:hidden transform scale-125"
+        onClick={toggleBurguer}
+      />
       <div id="profile" className="flex flex-col items-center ">
         <img
           className="rounded-full w-12"
@@ -48,7 +57,9 @@ export const LeftBar = () => {
           alt="Profile icon"
         />
         {toggled && (
-          <h1 className="text-white mt-3 font-semibold">{user.name}</h1>
+          <h1 className="text-white mt-3 hidden md:block font-semibold">
+            {user.name}
+          </h1>
         )}
         <div className="w-14 border-b hidden md:block mt-6 border-white opacity-50"></div>
       </div>
@@ -79,7 +90,7 @@ export const LeftBar = () => {
       </div>
       <div
         id="bottom"
-        className="flex flex-col justify-end items-center h-full "
+        className=" flex-col justify-end items-center hidden md:flex h-full "
       >
         <button
           onClick={() => {

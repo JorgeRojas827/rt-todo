@@ -5,6 +5,8 @@ import enviromentsReducer from "./slice/enviromentsSlice";
 import tasksReducer from "./slice/tasksSlice";
 import statesReducer from "./slice/stateSlice";
 
+// prueba123
+
 export const store = configureStore({
   reducer: {
     user: userReducer,

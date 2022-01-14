@@ -6,6 +6,7 @@ import { RootState } from '../store';
 const initialState: DataUser  = {
     id_user: 0,
     name: '',
+    email: '',
     image: foto
 }
 
@@ -16,6 +17,7 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<DataUser>) => {
             state.id_user = action.payload.id_user;
             state.name = action.payload.name;
+            state.email = action.payload.email;
             state.image = action.payload.image;
         },
     }

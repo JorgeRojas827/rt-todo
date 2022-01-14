@@ -56,11 +56,13 @@ export const NuevoModal = ({
   };
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50 absolute left-0 top-0">
-      <div className="bg-background relative rounded-lg w-72 md:w-96 h-36 md:h-60 flex flex-col justify-start items-center py-4">
+    <div className="w-screen h-screen cursor-default flex justify-center items-center bg-black bg-opacity-50 z-50 absolute left-0 top-0">
+      <div className="bg-background relative rounded-lg w-72 md:w-96 h-56 md:h-60 flex flex-col justify-start items-center py-4">
         <div id="head" className="flex ml-20 flex-col w-full">
-          <h2 className="text-primary mt-3 font-semibold text-lg">{title}</h2>
-          <div className="w-32 border-b hidden md:block mt-1 border-black opacity-10"></div>
+          <h2 className="text-primary cursor-text mt-3 font-semibold text-base md:text-lg">
+            {title}
+          </h2>
+          <div className="w-32 border-b mt-1 border-black opacity-10"></div>
         </div>
         <div id="content" className="w-full">
           {closable && (
@@ -78,7 +80,7 @@ export const NuevoModal = ({
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <input
-                  className="mt-6 p-3 focus:outline-none px-5 self-center shadow-default rounded-lg bg-white w-10/12 h-12"
+                  className="mt-6 p-3 focus:outline-none text-sm md:text-base px-5 self-center shadow-default rounded-lg bg-white w-10/12 h-11 md:h-12"
                   placeholder={placeholder}
                   autoComplete="none"
                   {...register(name)}

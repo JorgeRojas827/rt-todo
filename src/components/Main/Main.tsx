@@ -1,7 +1,6 @@
 import { EmptyEnviroment } from "./EmptyEnviroment";
 import { Enviroment } from "./Enviroment";
 
-import { Principal } from "../../views/Principal";
 import { useAppSelector } from "../../hooks";
 
 export const Main = () => {

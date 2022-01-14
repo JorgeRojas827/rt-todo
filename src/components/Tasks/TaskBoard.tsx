@@ -5,6 +5,8 @@ import { ITask } from "../../interfaces/Task";
 import { FiEdit } from "react-icons/fi";
 import { useModal } from "../../hooks/useModal";
 import { NuevoModal } from "../Modal/NuevoModal";
+import { useAlert } from "../../hooks/useAlert";
+import { AlertModal } from "../Modal/AlertModal";
 
 interface IProps {
   task: ITask;
@@ -16,6 +18,7 @@ export const TaskBoard = ({
   const { eliminarTarea } = useTareas();
   const { actualizarEstado } = useEstados();
   const { modal, toggleModal } = useModal();
+  const { alert, toggleAlert } = useAlert();
 
   const deleteTask = () => {
     eliminarTarea(id_task!);
@@ -47,6 +50,10 @@ export const TaskBoard = ({
             type="editar"
             id_task={id_task}
           />
+        )}
+
+        {alert && (
+          <AlertModal message="BORRAR TAREA" type="XD" closable={toggleAlert} />
         )}
       </div>
     </>

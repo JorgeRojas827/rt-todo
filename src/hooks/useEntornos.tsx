@@ -7,12 +7,12 @@ import { setCurrentEntorno } from "../slice/currentEnviromentSlice";
 
 export const useEntornos = () => {
   const entornos = useAppSelector((state) => state.enviroments);
-  const { name } = useAppSelector((state) => state.user);
+  const { email } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   const consumirEntornos = useCallback(
-    async (name: string) => {
-      const { data } = await todoAPI.get<Enviroment[]>("/enviroments/" + name);
+    async (email: string) => {
+      const { data } = await todoAPI.get<Enviroment[]>("/enviroments/" + email);
 
       dispatch(
         setEnviroments(
@@ -35,7 +35,7 @@ export const useEntornos = () => {
 
   const actualizarEntornos = async (id_enviro: number, enviro_name: string) => {
     await todoAPI.patch(`/enviroments/update/${id_enviro}/${enviro_name}`);
-    consumirEntornos(name);
+    consumirEntornos(email!);
     dispatch(setCurrentEntorno({ id_enviro, enviro_name }));
   };
 
