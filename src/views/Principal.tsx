@@ -19,9 +19,6 @@ export const Principal = () => {
     }
   }, [user, toggleModal]);
 
-  const clientId =
-    "49630108708-ps6nkv8q1k2b7ah1914vt6nk27dka7s2.apps.googleusercontent.com";
-
   return (
     <React.Fragment>
       <LeftBar />
@@ -37,7 +34,7 @@ export const Principal = () => {
             </div>
             <div id="content">
               <GoogleLogin
-                clientId={clientId}
+                clientId="49630108708-sdv7af5n5jkbeame78v61phj3tftrhnr.apps.googleusercontent.com"
                 render={(renderProps) => (
                   <div
                     onClick={renderProps.onClick}
