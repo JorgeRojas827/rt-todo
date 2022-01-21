@@ -38,9 +38,13 @@ export const useTareas = () => {
     originTask: number,
     destinationTask: number
   ) => {
-    await todoAPI.patch<ITask[]>(
-      `/tasks/updateIds/${originTask}/${destinationTask}`
-    );
+    try {
+      await todoAPI.patch<ITask[]>(
+        `/tasks/updateIds/${originTask}/${destinationTask}`
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const eliminarTarea = async (id: number) => {

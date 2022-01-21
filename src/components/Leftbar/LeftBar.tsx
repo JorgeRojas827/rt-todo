@@ -29,7 +29,7 @@ export const LeftBar = () => {
   // TODO: Testear con diferentes usuarios
 
   const clientId =
-    "49630108708-k52548mms6dpctid879h75e3filga94s.apps.googleusercontent.com";
+    "49630108708-sdv7af5n5jkbeame78v61phj3tftrhnr.apps.googleusercontent.com";
 
   const toggleBar = () => {
     setToggled(!toggled);
