@@ -17,22 +17,23 @@ export const TasksList = ({ empty }: IProps) => {
   const [cantity, setCantity] = useState(0);
 
   const calcularTotal = () => {
-    setCantity(estados.map((e) => e.cantity).reduce((acc, el) => acc + el));
+    estados.length !== 0 &&
+      setCantity(estados.map((e) => e.cantity).reduce((acc, el) => acc + el));
   };
 
   useEffect(() => {
-    actualizarEstado(estados[0].id_state);
+    estados.length !== 0 && actualizarEstado(estados[0].id_state);
     calcularTotal();
   }, [tasks.length, JSON.stringify(estados), JSON.stringify(tasks)]);
 
   return (
     <React.Fragment>
-      <div className="w-3/4 flex flex-col">
-        <div className="w-full flex justify-between opacity-50 text-xl">
+      <div className="w-11/12 flex flex-col justify-center">
+        <div className="w-full flex justify-between items-center opacity-50 text-xl">
           <h5>Tareas</h5>
-          <h4>{cantity}</h4>
+          <h4 className="md:text-base text-sm mr-2 md:mr-0">{cantity}</h4>
         </div>
-        <div className="bg-black mt-3 opacity-10 w-full h-px"></div>
+        <div className="bg-black md:mt-3 mt-1 opacity-10 w-full h-px"></div>
         {!empty && (
           <div
             id="tasks"

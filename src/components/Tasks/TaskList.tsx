@@ -39,7 +39,7 @@ export const TaskList = ({
             <h2 className="ml-5 font-semibold text-left">{description}</h2>
           )}
         </div>
-        <div className="flex items-center justify-center absolute right-5">
+        <div className="flex items-center justify-center absolute md:right-5 right-2">
           <FiEdit onClick={toggleModal} className="cursor-pointer" size={16} />
           <BsTrash
             onClick={deleteTask}

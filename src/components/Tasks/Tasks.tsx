@@ -55,7 +55,7 @@ export const Tasks = () => {
   return (
     <div>
       <div className="flex flex-col justify-center items-center w-full">
-        <div className="flex my-10 w-21/24 self-start ml-20 justify-between">
+        <div className="md:flex hidden my-10 w-21/24 self-start ml-20 justify-between">
           <div className="flex">
             <div
               className="cursor-pointer p-2 rounded-tl-lg rounded-bl-lg"
@@ -97,28 +97,35 @@ export const Tasks = () => {
             <p>Añadir tarea</p>
           </div>
         </div>
-        {display === "board" ? (
-          <div className="flex justify-between mb-10 w-10/12">
-            <DragDropContext onDragEnd={onDragEnd}>
-              {estados.map((estado) => {
-                return (
-                  <TasksBoard
-                    key={estado.id_state}
-                    setEmpty={setEmpty}
-                    empty={empty}
-                    state={estado}
-                  />
-                );
-              })}
-            </DragDropContext>
-          </div>
-        ) : (
-          <div className="flex justify-center items-center w-10/12">
-            <DragDropContext onDragEnd={onDragEnd}>
-              <TasksList empty={empty} setEmpty={setEmpty} />
-            </DragDropContext>
-          </div>
-        )}
+        <div className="hidden md:flex justify-center items-center w-10/12">
+          {display === "board" ? (
+            <div className="flex justify-between mb-10 w-full">
+              <DragDropContext onDragEnd={onDragEnd}>
+                {estados.map((estado) => {
+                  return (
+                    <TasksBoard
+                      key={estado.id_state}
+                      setEmpty={setEmpty}
+                      empty={empty}
+                      state={estado}
+                    />
+                  );
+                })}
+              </DragDropContext>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center mt-5 md:mt-0 w-10/12">
+              <DragDropContext onDragEnd={onDragEnd}>
+                <TasksList empty={empty} setEmpty={setEmpty} />
+              </DragDropContext>
+            </div>
+          )}
+        </div>
+        <div className="flex justify-center items-center mt-5 md:mt-0 md:hidden w-10/12">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <TasksList empty={empty} setEmpty={setEmpty} />
+          </DragDropContext>
+        </div>
         {empty && <EmptyTasks />}
         {modal && (
           <NuevoModal

@@ -19,7 +19,7 @@ export const TasksBoard = ({
   setEmpty,
 }: IProps) => {
   const { tasks } = useTareas();
-  const { estados, actualizarEstado } = useEstados();
+  const { actualizarEstado } = useEstados();
   const [tasksState, setTasksState] = useState<ITask[]>([]);
   const { enviro_name } = useAppSelector((state) => state.currentEnvironment);
 

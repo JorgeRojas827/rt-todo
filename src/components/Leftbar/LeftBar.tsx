@@ -11,6 +11,7 @@ import { useMiembros } from "../../hooks/useMiembros";
 import { useAppDispatch } from "../../hooks";
 import { setCurrentEntorno } from "../../slice/currentEnviromentSlice";
 import { useTareas } from "../../hooks/useTareas";
+import { LeftBarMobile } from "./LeftBarMobile";
 
 export const LeftBar = () => {
   const { modal, toggleModal } = useModal();
@@ -88,6 +89,12 @@ export const LeftBar = () => {
             })}
         </ul>
       </div>
+      <LeftBarMobile
+        clientId={clientId}
+        toggleBar={toggleBar}
+        toggleBurguer={toggleBurguer}
+        burguer={burger}
+      />
       <div
         id="bottom"
         className=" flex-col justify-end items-center hidden md:flex h-full "
